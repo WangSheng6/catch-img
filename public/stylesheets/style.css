@@ -1,0 +1,18 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.presentLi .checkbox {
+  position: absolute;
+  left: 8px;
+  top: 10px;
+}
+
+.presentLi a {
+  text-indent: 10px;
+}

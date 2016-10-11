@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>抓网页工具</title>
+  <link rel='stylesheet' href='/stylesheets/style.css'/>
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+  <script type="application/javascript" src="/javascripts/jquery.min.js"></script>
+  <script type="application/javascript" src="/javascripts/websocket.js"></script>
+  <script type="application/javascript" src="/javascripts/FileSaver.js"></script>
+</head>
+<body>
+    <h1 class="text-center">针对aso100的页面抓取程序</h1>
+    <form method="post" class="form-horizontal" role="form" action="/aso">
+        <div class="form-group">
+          <input name="url" class="form-control" value="http://aso100.com/index.php/rank/index?genre=6024" required type="text" placeholder="输入你要抓取的页面" />
+          <button id="getBtn" style="margin-top: 20px" class="btn btn-primary">抓取</button>
+        </div>
+        <% if(data){%>
+        <table id="cc" class="table table-bordered">
+            <thead>
+                <th colspan="4" class="data-title text-center"><%-data.title%></th>
+            </thead>
+            <thead>
+                <th colspan="4" class="text-center"><%-data.time%></th>
+            </thead>
+            <thead>
+                <th><%=data.th[0]%></th>
+                <th><%=data.th[1]%></th>
+                <th><%=data.th[2]%></th>
+                <th><%=data.th[3]%></th>
+            </thead>
+            <% data.td.forEach(function(item){ %>
+            <tr>
+                <td rowspan="4"><%-item.num%></td>
+                <td rowspan="4"><img src="<%-item.icon%>"/></td>
+                <td rowspan="4"><%-item.name%></td>
+                <td rowspan="4"><%-item.company%></td>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+            </tr>
+            <tr>
+            </tr>
+            <% }) %>
+        </table>
+        <%}%>
+    </form>
+    <script>
+        $(function(){
+            if(document.getElementById("cc")){
+                // todo 为了让生成的 xls 表格中的图片不会挤在一起，特意把上面的表格都设置为横跨四列
+                var blob = new Blob([document.getElementById("cc").outerHTML], {
+                    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+                });
+
+                saveAs(blob,  $(".data-title").text() + ".xls");
+            }
+        })
+    </script>
+</body>
+</html>

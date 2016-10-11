@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>抓网页工具</title>
+  <link rel='stylesheet' href='/stylesheets/style.css'/>
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+    <!-- REMOVE START -->
+    <script>
+        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+        ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
+    <!-- REMOVE END -->
+  <script type="application/javascript" src="/javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <h1 class="text-center"><%-title%></h1>
+    <div class="row" style="margin-bottom: 10px">
+        <a class="btn btn-primary" href="/duobao">回首页</a>
+    </div>
+    <div>
+        <table id="cc" class="table table-bordered">
+            <thead>
+            <th></th>
+            <th class="text-center"><%=time1%></th>
+            <th class="text-center"><%=time2%></th>
+            </thead>
+            <% if(targetDif.length > 0){%>
+            <% targetDif.forEach(function(item,index){ %>
+            <tr>
+                <td><%=index + 1%></td>
+                <td><% if(diff1[index]){%><%= diff1[index]%><%}%></td>
+                <td><% if(diff2[index]){%><%= diff2[index]%><%}%></td>
+            </tr>
+            <% }) %>
+            <% }else{ %>
+            <th colspan="3" class="text-center">没有不同的数据</th>
+            <% } %>
+        </table>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>抓网页工具</title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+</head>
+<body>
+<h1 class="text-center">针对亚马逊商品评论(用户头像/昵称)素材</h1>
+<form method="post" class="form-horizontal" role="form" action="/goods/userImg">
+    <div class="form-group">
+        <textarea rows="10" name="url" class="form-control" required placeholder="输入你要抓取的商品评论页面（亚马逊），比如： https://www.amazon.com/Jack-Ryan-Recruit-Chris-Pine/product-reviews/B00HZ3BGPS/ref=cm_cr_dp_see_all_btm?ie=UTF8&showViewpoints=1&sortBy=recent, 如果有多个的话换行显示">https://www.amazon.com/Amazon-Kindle-Voyage-6-Inch-4GB-eReader/product-reviews/B00IOY8XWQ/ref=cm_cr_dp_see_all_btm?ie=UTF8&showViewpoints=1&sortBy=recent,0,5</textarea>
+        <br>ps: 每一行都要包括三个参数，用英文逗号隔开，分别是 链接,开始页数,结束页数<br>
+        <button id="getBtn" style="margin-top: 20px" class="btn btn-primary">抓取</button>
+    </div>
+</form>
+</body>
+</html>

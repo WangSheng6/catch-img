@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>抓网页工具</title>
+  <link rel='stylesheet' href='/stylesheets/style.css'/>
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+  <script type="application/javascript" src="/javascripts/jquery.min.js"></script>
+  <script type="application/javascript" src="/javascripts/websocket.js"></script>
+</head>
+<body>
+    <h1 class="text-center">针对京东/天猫/淘宝的页面抓取程序</h1>
+    <form method="post" class="form-horizontal" role="form" action="/goods/catch">
+        <div class="form-group">
+          <textarea rows="10" name="url" class="form-control" required placeholder="输入你要抓取的京东/天猫/淘宝的商品页面，比如： http://item.jd.com/2025639.html, 如果有多个的话换行显示">http://item.jd.com/2025639.html</textarea>
+          <button id="getBtn" style="margin-top: 20px" class="btn btn-primary">抓取</button>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>抓网页工具</title>
+  <link rel='stylesheet' href='/stylesheets/style.css'/>
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+    <!-- REMOVE START -->
+    <script>
+        document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
+        ':35729/livereload.js?snipver=1"></' + 'script>')
+    </script>
+    <!-- REMOVE END -->
+  <script type="application/javascript" src="/javascripts/jquery.min.js"></script>
+  <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+  <script type="application/javascript" src="/javascripts/FileSaver.js"></script>
+
+</head>
+<body>
+    <h1 class="text-center"><%-title%></h1>
+    <div class="row" style="margin-bottom: 10px">
+        <a class="btn btn-primary" href="/duobao">回首页</a>
+        <% if(list.length > 1){ %>
+        <a id="compareBtn" class="btn btn-primary" data-site="<%=site%>">对比所选天数的数据</a>
+        <% } %>
+        <button id="importExcel" class="btn btn-primary">导出对应天的Excel</button>
+    </div>
+    <div>
+        <div class="row">
+        <!-- Nav tabs -->
+
+        <ul class="nav nav-pills nav-stacked col-md-2" role="tablist">
+            <% list.forEach(function(listItem,index){ %>
+            <li class="presentLi" role="presentation" <%if(index === 0){%>class="active"<%}%>>
+                <a href="#<%=listItem.time%>" aria-controls="<%=listItem.time%>" role="tab" data-toggle="tab">
+                    <%=listItem.time%>
+                </a>
+                <input class="checkbox" type="checkbox" value="<%=listItem.time%>">
+            </li>
+            <%})%>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content col-md-10">
+            <% list.forEach(function(listItem,index){ %>
+            <div role="tabpanel" class="tab-pane <%if(index===0){%>active<%}%>" id="<%=listItem.time%>">
+                <% if( listItem.data.td.length === 0) { %>
+                <span>该日期没有数据</span>
+                <% }else { %>
+                <table class="table table-bordered">
+                    <thead>
+                    <th colspan="2" class="data-title text-center"><%-listItem.data.title%></th>
+                    </thead>
+                    <thead>
+                    <th colspan="2" class="data-time text-center"><%=listItem.time%></th>
+                    </thead>
+                    <thead>
+                    <th><%=listItem.data.th[0]%></th>
+                    <th><%=listItem.data.th[1]%></th>
+                    </thead>
+                    <% listItem.data.td.forEach(function(item,index){ %>
+                    <tr>
+                        <td><%=index + 1%></td>
+                        <td><%-item.name%></td>
+                    </tr>
+                    <% }) %>
+                </table>
+                <% } %>
+            </div>
+            <%})%>
+        </div>
+
+    </div>
+        <script>
+
+            window.Array.prototype.remove = function (val) {
+                var index = this.indexOf(val);
+                if (index > -1) {
+                    this.splice(index, 1);
+                }
+            };
+
+            $(function() {
+                $("#importExcel").click(function(){
+                    var activeTable = $(".tab-content .active");
+                    var blob = new Blob([activeTable.find("table").get(0).outerHTML], {
+                        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+                    });
+
+                    saveAs(blob,  activeTable.find(".data-title").text() + "_" +activeTable.find(".data-time").text() + ".xls");
+                })
+                var checkBoxArr = [];
+                $(".checkbox").click(function(e){
+                    var target = $(e.currentTarget);
+                    var value = target.get(0).value;
+                    if(target.attr("checked") == "checked" || target.get(0).checked){
+                        checkBoxArr.push(value);
+                    }else{
+                        // 去掉选项
+                        checkBoxArr.remove(value);
+                    }
+                    if(checkBoxArr.length > 1){
+                        // 除了已经选的，其他都置灰
+                        $(".checkbox").each(function(){
+                            if(!($(this).attr("checked") == "checked" || $(this).get(0).checked)){
+                                $(this).attr("disabled",true);
+                                $(this).addClass("disabled");
+                            }
+                        });
+                        // 比较按钮可以用
+                        var newArr = checkBoxArr.sort(function(a,b){return a<b});
+                        var compareUrl = "/duobao/compare?time1="+ newArr[0] +"&time2="+ newArr[1] +"&site="+ $("#compareBtn").attr("data-site");
+                        $("#compareBtn").attr("href", compareUrl);
+                        $("#compareBtn").removeAttr("disabled");
+                    }else{
+                        $(".checkbox").removeAttr("disabled");
+                        $(".checkbox").removeClass("disabled");
+                        $("#compareBtn").attr("disabled", true);
+                    }
+                });
+                $("#compareBtn").click(function(e){
+                    if($(e.currentTarget).attr("disabled")){
+                        return false;
+                    }
+                });
+                // 默认勾选前两个
+                $(".checkbox").each(function(index){
+                    $(this).get(0).checked = false;
+                });
+                $($(".presentLi")[0]).addClass("active");
+                $(".checkbox").each(function(index){
+                    if(index < 2){
+                        $(this).trigger("click");
+                    }
+                });
+            });
+        </script>
+</body>
+</html>

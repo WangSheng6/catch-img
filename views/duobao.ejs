@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>夺宝站点页面抓取</title>
+  <link rel='stylesheet' href='/stylesheets/style.css'/>
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+</head>
+<body>
+    <h1 class="text-center">相关夺宝站点抓取程序</h1>
+    <h3 class="text-center">程序抓取</h3>
+    <ul>
+        <% data.forEach(function(item){ %>
+        <li><a href="/duobao/catch?site=<%=item[0]%>"><%- item[1]%></a></li>
+        <%})%>
+    </ul>
+    <hr>
+    <h3 class="text-center">往期数据查看和对比</h3>
+    <ul>
+        <% data.forEach(function(item){ %>
+        <li><a href="/duobao/past?site=<%=item[0]%>"><%- item[1]%></a></li>
+        <%})%>
+    </ul>
+</body>
+</html>

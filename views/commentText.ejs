@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>抓网页工具</title>
+  <link rel='stylesheet' href='/stylesheets/style.css'/>
+  <link rel='stylesheet' href='/stylesheets/bootstrap.css'/>
+  <script type="application/javascript" src="/javascripts/jquery.min.js"></script>
+  <script type="application/javascript" src="/javascripts/websocket.js"></script>
+  <script type="application/javascript" src="/javascripts/FileSaver.js"></script>
+</head>
+<body>
+    <h1 class="text-center">针对网易一元夺宝的晒单文字抓取</h1>
+    <form method="post" class="form-horizontal" role="form" action="/goods/commentText">
+        <div class="form-group">
+            <br>要请求的页数(1页40条)：<input type="number" name="start" value="1" /> ---- <input type="number" name="end" value="5" />
+            <br>选择类型：
+            <select class="select" name="type">
+                <option default value=0>全部</option>
+                <option value=1>手机平板</option>
+                <option value=2>电脑办公</option>
+                <option value=3>数码影音</option>
+                <option value=4>女性时尚</option>
+                <option value=5>美食天地</option>
+                <option value=6>潮流新品</option>
+                <option value=7>网易周边</option>
+                <option value=8>其他商品</option>
+            </select>
+            <br>
+          <button id="getBtn" style="margin-top: 20px" class="btn btn-primary">抓取</button>
+        </div>
+        <% if(data){%>
+        <table id="cc" class="table table-bordered">
+            <thead>
+                <th colspan="4" class="data-title text-center"><%-data.title%> - (<%-data.type%>)</th>
+            </thead>
+            <thead>
+                <th><%=data.th[0]%></th>
+                <th><%=data.th[1]%></th>
+                <th><%=data.th[2]%></th>
+                <th><%=data.th[3]%></th>
+            </thead>
+            <% data.td.forEach(function(item,index){ %>
+            <tr>
+                <td><%=index + 1%></td>
+                <td><%-item.name%></td>
+                <td><%-item.title%></td>
+                <td><%-item.des%></td>
+            </tr>
+            <% }) %>
+        </table>
+        <%}%>
+    </form>
+    <script>
+        $(function(){
+            var a = [];
+            // todo 为了让生成的 xls 表格中的图片不会挤在一起，特意把上面的表格都设置为横跨四列
+            var blob = new Blob([document.getElementById("cc").outerHTML], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+            });
+
+            saveAs(blob,  $(".data-title").text() + ".xls");
+        })
+    </script>
+</body>
+</html>
